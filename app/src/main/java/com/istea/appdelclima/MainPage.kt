@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,6 +36,40 @@ fun MainPage(modifier: Modifier = Modifier) {
         Text(text = "${temperatura.value}°", style = MaterialTheme.typography.titleLarge)
         Text(text = descripcion.value, style = MaterialTheme.typography.bodyMedium)
         Text(text = "sensacionTermica: ${st.value}°", style = MaterialTheme.typography.bodyMedium)
+
+        Button(
+            onClick = {
+                ciudad.value = ""
+                temperatura.value = 0
+                descripcion.value = ""
+                st.value = 0
+            }
+        ) {
+            Text(text = "Borrar todo")
+        }
+
+        Button(
+            onClick = {
+                ciudad.value = "CABA"
+                temperatura.value = 10
+                descripcion.value = "nublado"
+                st.value = 9
+            }
+        ) {
+            Text(text = "Mostrar Caba")
+        }
+
+        Button(
+            onClick = {
+                ciudad.value = "Cordoba"
+                temperatura.value = 20
+                descripcion.value = "soleado"
+                st.value = 23
+            }
+        ) {
+            Text(text = "Mostrar Cordoba")
+        }
+
     }
 }
 
