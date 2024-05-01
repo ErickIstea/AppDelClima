@@ -10,4 +10,3 @@ data class Clima (
     val longitud: Long,
     val estado: String
 )
-

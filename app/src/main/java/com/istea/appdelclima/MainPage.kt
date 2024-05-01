@@ -18,13 +18,20 @@ import com.istea.appdelclima.ui.theme.AppDelClimaTheme
 
 @Composable
 fun MainPage(){
-    MainView(viewModel = viewModel())
+    val viewModel : MainPageViewModel = viewModel()
+    MainView(
+        state = viewModel.uiState,
+        onAction = { intencion ->
+            viewModel.ejecutarIntencion(intencion)
+        }
+    )
 }
 
 @Composable
 fun MainView(
     modifier: Modifier = Modifier,
-    viewModel :MainPageViewModel
+    state : Estado,
+    onAction: (Intencion)->Unit
 ) {
     Column(
         modifier = modifier
@@ -32,26 +39,46 @@ fun MainView(
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (viewModel.noHayDatos.value) {
-            Text(text = "No hay nada que mostrar")
-        } else {
-            Text(text = viewModel.ciudad.value, style = MaterialTheme.typography.titleMedium)
-            Text(text = "${viewModel.temperatura.value}°", style = MaterialTheme.typography.titleLarge)
-            Text(text = viewModel.descripcion.value, style = MaterialTheme.typography.bodyMedium)
-            Text(text = "sensacionTermica: ${viewModel.st.value}°", style = MaterialTheme.typography.bodyMedium)
+        when(state){
+            is Estado.Error -> ErrorView(mensaje = state.mensaje)
+            is Estado.Exitoso -> ClimaView(ciudad = state.ciudad, temperatura = state.temperatura, descripcion = state.descripcion, st = state.st)
+            Estado.Vacio -> EmptyView()
         }
 
         Spacer(modifier = Modifier.height(100.dp))
 
-        Button(onClick = { viewModel.borrarTodo() }) {
+        Button(onClick = { onAction(Intencion.BorrarTodo) }) {
             Text(text = "Borrar todo")
         }
-        Button(onClick = { viewModel.mostrarCaba() }) {
+        Button(onClick = { onAction(Intencion.MostrarCaba) }) {
             Text(text = "Mostrar Caba")
         }
-        Button(onClick = { viewModel.mostrarCordoba() }) {
+        Button(onClick = { onAction(Intencion.MostrarCordoba) }) {
             Text(text = "Mostrar Cordoba")
         }
+        Button(onClick = { onAction(Intencion.MostrarError) }) {
+            Text(text = "Mostrar Error")
+        }
+    }
+}
+
+@Composable
+fun EmptyView(){
+    Text(text = "No hay nada que mostrar")
+}
+
+@Composable
+fun ErrorView(mensaje: String){
+    Text(text = mensaje)
+}
+
+@Composable
+fun ClimaView(ciudad: String, temperatura: Int, descripcion: String, st:Int){
+    Column {
+        Text(text = ciudad, style = MaterialTheme.typography.titleMedium)
+        Text(text = "${temperatura}°", style = MaterialTheme.typography.titleLarge)
+        Text(text = descripcion, style = MaterialTheme.typography.bodyMedium)
+        Text(text = "sensacionTermica: ${st}°", style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -59,6 +86,22 @@ fun MainView(
 @Composable
 fun MainPagePreview() {
     AppDelClimaTheme {
-        MainView(viewModel=viewModel())
+        MainView(state = Estado.Vacio, onAction = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPagePreview2() {
+    AppDelClimaTheme {
+        MainView(state = Estado.Error("Se rompio todo"), onAction = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainPagePreview3() {
+    AppDelClimaTheme {
+        MainView(state = Estado.Exitoso(ciudad = "Mendoza", temperatura = 0), onAction = {})
     }
 }

@@ -1,14 +1,48 @@
 package com.istea.appdelclima
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class MainPageViewModel : ViewModel() {
-    val ciudad = mutableStateOf<String>("")
-    val temperatura = mutableStateOf<Int>(0)
-    val descripcion = mutableStateOf<String>("")
-    val st = mutableStateOf<Int>(0)
-    val noHayDatos = mutableStateOf(true)
+
+    var uiState by mutableStateOf<Estado>(Estado.Vacio)
+
+    fun ejecutarIntencion(intencion: Intencion){
+        when(intencion){
+            Intencion.BorrarTodo -> borrarTodo()
+            Intencion.MostrarCaba -> mostrarCaba()
+            Intencion.MostrarCordoba -> mostrarCordoba()
+            Intencion.MostrarError -> mostrarError()
+        }
+    }
+
+    private fun mostrarError(){
+        uiState = Estado.Error("este es un error de mentiras")
+    }
+
+    private fun borrarTodo(){
+        uiState = Estado.Vacio
+    }
+
+    private fun mostrarCaba(){
+        uiState = Estado.Exitoso(
+            ciudad= climaCABA.ciudad,
+            temperatura = climaCABA.temperatura,
+            descripcion = climaCABA.estado,
+            st = climaCABA.st
+        )
+    }
+
+    private fun mostrarCordoba(){
+        uiState = Estado.Exitoso(
+            ciudad= climaCordoba.ciudad,
+            temperatura = climaCordoba.temperatura,
+            descripcion = climaCordoba.estado,
+            st = climaCordoba.st
+        )
+    }
 
     private val climaCordoba = Clima(
         ciudad = "Cordoba",
@@ -31,29 +65,4 @@ class MainPageViewModel : ViewModel() {
         latitud = 12323123,
         longitud = 1143234
     )
-
-    fun borrarTodo(){
-        ciudad.value = ""
-        temperatura.value = 0
-        descripcion.value = ""
-        st.value = 0
-        noHayDatos.value = true
-    }
-
-    fun mostrarCaba(){
-        ciudad.value = climaCABA.ciudad
-        temperatura.value = climaCABA.temperatura
-        descripcion.value = climaCABA.estado
-        st.value = climaCABA.st
-        noHayDatos.value = false
-    }
-
-    fun mostrarCordoba(){
-        ciudad.value = climaCordoba.ciudad
-        temperatura.value = climaCordoba.temperatura
-        descripcion.value = climaCordoba.estado
-        st.value = climaCordoba.st
-        noHayDatos.value = false
-    }
-
 }
