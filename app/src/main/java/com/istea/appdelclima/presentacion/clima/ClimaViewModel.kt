@@ -1,33 +1,34 @@
-package com.istea.appdelclima
+package com.istea.appdelclima.presentacion.clima
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.istea.appdelclima.repository.Clima
 
-class MainPageViewModel : ViewModel() {
+class ClimaViewModel : ViewModel() {
 
-    var uiState by mutableStateOf<Estado>(Estado.Vacio)
+    var uiState by mutableStateOf<ClimaEstado>(ClimaEstado.Vacio)
 
-    fun ejecutarIntencion(intencion: Intencion){
+    fun ejecutar(intencion: ClimaIntencion){
         when(intencion){
-            Intencion.BorrarTodo -> borrarTodo()
-            Intencion.MostrarCaba -> mostrarCaba()
-            Intencion.MostrarCordoba -> mostrarCordoba()
-            Intencion.MostrarError -> mostrarError()
+            ClimaIntencion.BorrarTodo -> borrarTodo()
+            ClimaIntencion.MostrarCaba -> mostrarCaba()
+            ClimaIntencion.MostrarCordoba -> mostrarCordoba()
+            ClimaIntencion.MostrarError -> mostrarError()
         }
     }
 
     private fun mostrarError(){
-        uiState = Estado.Error("este es un error de mentiras")
+        uiState = ClimaEstado.Error("este es un error de mentiras")
     }
 
     private fun borrarTodo(){
-        uiState = Estado.Vacio
+        uiState = ClimaEstado.Vacio
     }
 
     private fun mostrarCaba(){
-        uiState = Estado.Exitoso(
+        uiState = ClimaEstado.Exitoso(
             ciudad= climaCABA.ciudad,
             temperatura = climaCABA.temperatura,
             descripcion = climaCABA.estado,
@@ -36,7 +37,7 @@ class MainPageViewModel : ViewModel() {
     }
 
     private fun mostrarCordoba(){
-        uiState = Estado.Exitoso(
+        uiState = ClimaEstado.Exitoso(
             ciudad= climaCordoba.ciudad,
             temperatura = climaCordoba.temperatura,
             descripcion = climaCordoba.estado,
