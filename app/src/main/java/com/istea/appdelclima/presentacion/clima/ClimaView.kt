@@ -68,7 +68,7 @@ fun ErrorView(mensaje: String){
 }
 
 @Composable
-fun ClimaView(ciudad: String, temperatura: Int, descripcion: String, st:Int){
+fun ClimaView(ciudad: String, temperatura: Double, descripcion: String, st:Double){
     Column {
         Text(text = ciudad, style = MaterialTheme.typography.titleMedium)
         Text(text = "${temperatura}°", style = MaterialTheme.typography.titleLarge)
@@ -97,6 +97,6 @@ fun ClimaPreviewError() {
 @Composable
 fun ClimaPreviewExitoso() {
     AppDelClimaTheme {
-        ClimaView(state = ClimaEstado.Exitoso(ciudad = "Mendoza", temperatura = 0), onAction = {})
+        ClimaView(state = ClimaEstado.Exitoso(ciudad = "Mendoza", temperatura = 0.0), onAction = {})
     }
 }
