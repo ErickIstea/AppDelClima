@@ -15,6 +15,7 @@ import kotlinx.serialization.json.Json
 class RepositorioApi : Repositorio {
 
     private val apiKey = "95e93e4f7a36fc511148468d1774792d"
+
     private val cliente = HttpClient(){
         install(ContentNegotiation){
             json(Json {
@@ -23,24 +24,29 @@ class RepositorioApi : Repositorio {
         }
     }
 
-    override suspend fun buscarCiudad(ciudad: String): List<Ciudad> {
-        val respuesta = cliente.get("http://api.openweathermap.org/geo/1.0/direct"){
-            parameter("q",ciudad)
-            parameter("limit",5)
-            parameter("appid",apiKey)
+    override suspend fun buscarCiudad(ciudad: String): Array<Ciudad> {
+        println("JOJO: Buscar ciudad")
+
+        val respuesta = cliente.get("https://api.openweathermap.org/geo/1.0/direct?q=lon&limit=5&appid=95e93e4f7a36fc511148468d1774792d"){
+//            parameter("q",ciudad)
+//            parameter("limit",100)
+//            parameter("appid",apiKey)
         }
+
         if (respuesta.status == HttpStatusCode.OK){
-            val ciudades = respuesta.body<List<Ciudad>>()
+            println("JOJO: Status OK")
+            val ciudades = respuesta.body<Array<Ciudad>>()
             return ciudades
         }else{
+            println("JOJO: Status no ok")
             throw Exception()
         }
     }
 
     override suspend fun traerClima(ciudad: Ciudad): Clima2 {
         val respuesta = cliente.get("https://api.openweathermap.org/data/2.5/weather"){
-            parameter("lat",ciudad.lat)
-            parameter("lon",ciudad.lon)
+//            parameter("lat",ciudad.lat)
+//            parameter("lon",ciudad.lon)
             parameter("units","metric")
             parameter("appid",apiKey)
         }
