@@ -3,6 +3,7 @@ package com.istea.appdelclima.presentacion.ciudades
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -39,6 +40,9 @@ fun CiudadesView (
             is CiudadesEstado.Error -> Text(text = state.mensaje)
             is CiudadesEstado.Resultado -> ListaDeCiudades(state.ciudades, { onAction(CiudadesIntencion.Seleccionar(it))})
             CiudadesEstado.Vacio -> Text(text = "No hay resultados")
+        }
+        Button(onClick = { onAction(CiudadesIntencion.Seleccionar(0)) }) {
+            Text(text = "Siguiente")
         }
     }
 }

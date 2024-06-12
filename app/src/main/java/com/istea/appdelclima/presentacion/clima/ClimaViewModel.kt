@@ -9,25 +9,19 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.istea.appdelclima.presentacion.ciudades.CiudadesViewModel
 import com.istea.appdelclima.repository.Repositorio
 import com.istea.appdelclima.repository.RepositorioApi
 import com.istea.appdelclima.repository.RepositorioMock
 import com.istea.appdelclima.repository.modelos.Ciudad
 import com.istea.appdelclima.repository.modelos.Clima
+import com.istea.appdelclima.router.Router
 import kotlinx.coroutines.launch
 
 class ClimaViewModel(
-    val respositorio: Repositorio
+    val respositorio: Repositorio,
+    val router: Router
 ) : ViewModel() {
-
-    companion object {
-        val factory : ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val repositorio = RepositorioApi()
-                ClimaViewModel(repositorio)
-            }
-        }
-    }
 
     var uiState by mutableStateOf<ClimaEstado>(ClimaEstado.Vacio)
 
@@ -70,4 +64,17 @@ class ClimaViewModel(
         }
     }
 
+}
+
+class ClimaViewModelFactory(
+    private val repositorio: Repositorio,
+    private val router: Router
+) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(ClimaViewModel::class.java)) {
+            return ClimaViewModel(repositorio,router) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }

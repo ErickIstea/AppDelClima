@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.istea.appdelclima.repository.Repositorio
+import com.istea.appdelclima.router.Router
+import com.istea.appdelclima.router.Ruta
 import kotlinx.coroutines.launch
 
 class CiudadesViewModel(
-    val repositorio: Repositorio
+    val repositorio: Repositorio,
+    val router: Router
 ) : ViewModel(){
 
     var uiState by mutableStateOf<CiudadesEstado>(CiudadesEstado.Vacio)
@@ -37,17 +40,19 @@ class CiudadesViewModel(
 
     private fun seleccionar(indice: Int){
         uiState = CiudadesEstado.Vacio
+        router.navegar(Ruta.Clima())
     }
 }
 
 
 class CiudadesViewModelFactory(
-    private val repositorio: Repositorio
+    private val repositorio: Repositorio,
+    private val router: Router
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CiudadesViewModel::class.java)) {
-            return CiudadesViewModel(repositorio) as T
+            return CiudadesViewModel(repositorio,router) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
