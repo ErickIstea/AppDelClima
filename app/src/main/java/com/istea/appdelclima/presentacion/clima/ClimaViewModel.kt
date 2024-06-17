@@ -27,39 +27,24 @@ class ClimaViewModel(
 
     fun ejecutar(intencion: ClimaIntencion){
         when(intencion){
-            ClimaIntencion.BorrarTodo -> borrarTodo()
-            ClimaIntencion.MostrarCaba -> mostrarCaba()
-            ClimaIntencion.MostrarCordoba -> mostrarCordoba()
-            ClimaIntencion.MostrarError -> mostrarError()
+            ClimaIntencion.actualizarClima -> traerClima()
         }
     }
 
-    private fun mostrarError(){
-        uiState = ClimaEstado.Error("este es un error de mentiras")
-    }
-
-    private fun borrarTodo(){
-        uiState = ClimaEstado.Vacio
-    }
-
-    private fun mostrarCaba(){
-
-    }
-
-    private fun mostrarCordoba(){
-        ClimaEstado.Cargando
+    fun traerClima() {
+        uiState = ClimaEstado.Cargando
         viewModelScope.launch {
             val cordoba = Ciudad(name = "Cordoba", lat = -31.4135, lon = -64.18105, country = "Ar")
             try{
                 val clima = respositorio.traerClima(cordoba)
-                ClimaEstado.Exitoso(
+                uiState = ClimaEstado.Exitoso(
                     ciudad = clima.name ,
-                    temperatura = 10.0,//clima.main.temp,
-                    descripcion = "asd",//clima.weather.first().description,
-                    st = 10.2//clima.main.feelsLike,
+                    temperatura = clima.main.temp,
+                    descripcion = clima.weather.first().description,
+                    st = clima.main.feels_like,
                 )
-            } catch (exeption: Exception){
-                ClimaEstado.Error("jojo")
+            } catch (exception: Exception){
+                uiState = ClimaEstado.Error(exception.localizedMessage ?: "error desconocido")
             }
         }
     }

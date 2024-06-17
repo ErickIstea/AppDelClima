@@ -1,7 +1,7 @@
 package com.istea.appdelclima.repository
 
 import com.istea.appdelclima.repository.modelos.Ciudad
-import com.istea.appdelclima.repository.modelos.Clima2
+import com.istea.appdelclima.repository.modelos.Clima
 
 class RepositorioMock  : Repositorio {
     override suspend fun buscarCiudad(ciudad: String): Array<Ciudad> {
@@ -20,11 +20,11 @@ class RepositorioMock  : Repositorio {
         return arrayOf(ciudad1,ciudad2,ciudad3)
     }
 
-    override suspend fun traerClima(ciudad: Ciudad): Clima2 {
+    override suspend fun traerClima(ciudad: Ciudad): Clima {
         TODO("Not yet implemented")
     }
 
-    override suspend fun traerPronostico(ciudad: Ciudad): List<Clima2> {
+    override suspend fun traerPronostico(ciudad: Ciudad): List<Clima> {
         TODO("Not yet implemented")
     }
 }

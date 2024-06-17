@@ -13,6 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import com.istea.appdelclima.ui.theme.AppDelClimaTheme
 
 
@@ -22,6 +24,9 @@ fun ClimaView(
     state : ClimaEstado,
     onAction: (ClimaIntencion)->Unit
 ) {
+    LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
+        onAction(ClimaIntencion.actualizarClima)
+    }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -36,30 +41,21 @@ fun ClimaView(
                 descripcion = state.descripcion,
                 st = state.st
             )
-            ClimaEstado.Vacio -> EmptyView()
+            ClimaEstado.Vacio -> LoadingView()
             ClimaEstado.Cargando -> EmptyView()
         }
-
         Spacer(modifier = Modifier.height(100.dp))
-
-        Button(onClick = { onAction(ClimaIntencion.BorrarTodo) }) {
-            Text(text = "Borrar todo")
-        }
-        Button(onClick = { onAction(ClimaIntencion.MostrarCaba) }) {
-            Text(text = "Mostrar Caba")
-        }
-        Button(onClick = { onAction(ClimaIntencion.MostrarCordoba) }) {
-            Text(text = "Mostrar Cordoba")
-        }
-        Button(onClick = { onAction(ClimaIntencion.MostrarError) }) {
-            Text(text = "Mostrar Error")
-        }
     }
 }
 
 @Composable
 fun EmptyView(){
     Text(text = "No hay nada que mostrar")
+}
+
+@Composable
+fun LoadingView(){
+    Text(text = "Cargando")
 }
 
 @Composable

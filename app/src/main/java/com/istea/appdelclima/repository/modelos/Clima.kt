@@ -2,21 +2,16 @@ package com.istea.appdelclima.repository.modelos
 
 import kotlinx.serialization.Serializable
 
-data class Clima (
-    val temperatura: Int,
-    val humedad: Float,
-    val ciudad: String,
-    val st: Int,
-    val viento: Int,
-    val latitud: Long,
-    val longitud: Long,
-    val estado: String
-)
-
 @Serializable
-data class Clima2(
+data class Clima(
     val base: String,
     val name: String,
+    val coord: Coord,
+    val weather: List<Weather>,
+    val main: Main,
+    val wind: Wind,
+    val clouds: Clouds,
+    val sys: Sys
 )
 @Serializable
 data class Coord(
@@ -33,9 +28,9 @@ data class Weather(
 @Serializable
 data class Main(
     val temp: Double,
-    val feelsLike: Double,
-    val tempMin: Double,
-    val tempMax: Double,
+    val feels_like: Double,
+    val temp_min: Double,
+    val temp_max: Double,
     val pressure: Long,
     val humidity: Long,
 )
@@ -43,7 +38,7 @@ data class Main(
 data class Wind(
     val speed: Double,
     val deg: Long,
-    val gust: Double,
+    val gust: Double? = null,
 )
 
 @Serializable

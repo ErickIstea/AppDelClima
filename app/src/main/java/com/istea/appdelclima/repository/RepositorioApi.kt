@@ -2,7 +2,6 @@ package com.istea.appdelclima.repository
 
 import com.istea.appdelclima.repository.modelos.Ciudad
 import com.istea.appdelclima.repository.modelos.Clima
-import com.istea.appdelclima.repository.modelos.Clima2
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -39,7 +38,7 @@ class RepositorioApi : Repositorio {
         }
     }
 
-    override suspend fun traerClima(ciudad: Ciudad): Clima2 {
+    override suspend fun traerClima(ciudad: Ciudad): Clima {
         val respuesta = cliente.get("https://api.openweathermap.org/data/2.5/weather"){
             parameter("lat",ciudad.lat)
             parameter("lon",ciudad.lon)
@@ -47,14 +46,14 @@ class RepositorioApi : Repositorio {
             parameter("appid",apiKey)
         }
         if (respuesta.status == HttpStatusCode.OK){
-            val clima = respuesta.body<Clima2>()
+            val clima = respuesta.body<Clima>()
             return clima
         }else{
             throw Exception()
         }
     }
 
-    override suspend fun traerPronostico(ciudad: Ciudad): List<Clima2> {
+    override suspend fun traerPronostico(ciudad: Ciudad): List<Clima> {
         TODO("Not yet implemented")
     }
 }
