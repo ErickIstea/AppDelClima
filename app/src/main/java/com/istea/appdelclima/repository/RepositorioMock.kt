@@ -6,16 +6,16 @@ import com.istea.appdelclima.repository.modelos.Clima2
 class RepositorioMock  : Repositorio {
     override suspend fun buscarCiudad(ciudad: String): Array<Ciudad> {
         val ciudad1 = Ciudad(name = "Cordoba",
-//            lat = -23.0,
-//            lon = -24.3,
+            lat = -23.0,
+            lon = -24.3,
             country = "Argentina")
         val ciudad2 =Ciudad(name = "Buenos Aires",
-//            lat = -23.0,
-//            lon = -24.3,
+            lat = -23.0,
+            lon = -24.3,
             country = "Argentina")
         val ciudad3 =Ciudad(name = "La Plata",
-//            lat = -23.0,
-//            lon = -24.3,
+            lat = -23.0,
+            lon = -24.3,
             country = "Argentina")
         return arrayOf(ciudad1,ciudad2,ciudad3)
     }

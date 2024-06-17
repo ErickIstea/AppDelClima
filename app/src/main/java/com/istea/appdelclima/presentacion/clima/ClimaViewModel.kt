@@ -49,7 +49,7 @@ class ClimaViewModel(
     private fun mostrarCordoba(){
         ClimaEstado.Cargando
         viewModelScope.launch {
-            val cordoba = Ciudad(name = "Cordoba", /*lat = -31.4135, lon = -64.18105,*/ country = "Ar")
+            val cordoba = Ciudad(name = "Cordoba", lat = -31.4135, lon = -64.18105, country = "Ar")
             try{
                 val clima = respositorio.traerClima(cordoba)
                 ClimaEstado.Exitoso(
