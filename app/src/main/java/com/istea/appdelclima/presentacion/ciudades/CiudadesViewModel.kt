@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.istea.appdelclima.repository.Repositorio
+import com.istea.appdelclima.repository.modelos.Ciudad
 import com.istea.appdelclima.router.Router
 import com.istea.appdelclima.router.Ruta
 import kotlinx.coroutines.launch
@@ -17,11 +18,12 @@ class CiudadesViewModel(
 ) : ViewModel(){
 
     var uiState by mutableStateOf<CiudadesEstado>(CiudadesEstado.Vacio)
+    var ciudades : List<Ciudad> = emptyList()
 
     fun ejecutar(intencion: CiudadesIntencion){
         when(intencion){
             is CiudadesIntencion.Buscar -> buscar(nombre = intencion.nombre)
-            is CiudadesIntencion.Seleccionar -> seleccionar(indice = intencion.indice)
+            is CiudadesIntencion.Seleccionar -> seleccionar(ciudad = intencion.ciudad)
         }
     }
 
@@ -30,17 +32,20 @@ class CiudadesViewModel(
         uiState = CiudadesEstado.Cargando
         viewModelScope.launch {
             try {
-                val listaDeCiudades = repositorio.buscarCiudad(nombre)
-                uiState = CiudadesEstado.Resultado(listaDeCiudades)
+                ciudades = repositorio.buscarCiudad(nombre)
+                uiState = CiudadesEstado.Resultado(ciudades)
             } catch (exeption: Exception){
                 uiState = CiudadesEstado.Error(exeption.message ?: "error desconocido")
             }
         }
     }
 
-    private fun seleccionar(indice: Int){
-        uiState = CiudadesEstado.Vacio
-        router.navegar(Ruta.Clima())
+    private fun seleccionar(ciudad: Ciudad){
+        val ruta = Ruta.Clima(
+            lat = ciudad.lat,
+            lon = ciudad.lon
+        )
+        router.navegar(ruta)
     }
 }
 
