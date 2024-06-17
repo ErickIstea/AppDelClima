@@ -33,7 +33,7 @@ class CiudadesViewModel(
                 val listaDeCiudades = repositorio.buscarCiudad(nombre)
                 uiState = CiudadesEstado.Resultado(listaDeCiudades)
             } catch (exeption: Exception){
-                uiState = CiudadesEstado.Error("Error al buscar la ciudad")
+                uiState = CiudadesEstado.Error(exeption.message ?: "error desconocido")
             }
         }
     }
