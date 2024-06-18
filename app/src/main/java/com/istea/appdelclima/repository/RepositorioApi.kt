@@ -2,6 +2,8 @@ package com.istea.appdelclima.repository
 
 import com.istea.appdelclima.repository.modelos.Ciudad
 import com.istea.appdelclima.repository.modelos.Clima
+import com.istea.appdelclima.repository.modelos.ForecastDTO
+import com.istea.appdelclima.repository.modelos.ListForecast
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -53,7 +55,19 @@ class RepositorioApi : Repositorio {
         }
     }
 
-    override suspend fun traerPronostico(lat: Float, lon: Float): List<Clima> {
-        TODO("Not yet implemented")
+    override suspend fun traerPronostico(nombre: String): List<ListForecast> {
+
+        val respuesta = cliente.get("https://api.openweathermap.org/data/2.5/forecast"){
+            parameter("q",nombre)
+            parameter("units","metric")
+            parameter("appid",apiKey)
+        }
+        if (respuesta.status == HttpStatusCode.OK){
+            val forecast = respuesta.body<ForecastDTO>()
+            return forecast.list
+        }else{
+            throw Exception()
+        }
+
     }
 }

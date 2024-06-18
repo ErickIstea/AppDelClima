@@ -43,7 +43,8 @@ class CiudadesViewModel(
     private fun seleccionar(ciudad: Ciudad){
         val ruta = Ruta.Clima(
             lat = ciudad.lat,
-            lon = ciudad.lon
+            lon = ciudad.lon,
+            nombre = ciudad.name
         )
         router.navegar(ruta)
     }

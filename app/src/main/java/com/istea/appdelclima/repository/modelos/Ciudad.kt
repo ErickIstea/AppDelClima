@@ -8,5 +8,5 @@ data class Ciudad(
     val lat: Float,
     val lon: Float,
     val country: String,
-    val state: String? = null
+    val state: String = ""
 )

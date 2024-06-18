@@ -1,4 +1,4 @@
-package com.istea.appdelclima.presentacion.clima
+package com.istea.appdelclima.presentacion.clima.actual
 
 sealed class ClimaEstado {
     data class Exitoso (
@@ -6,7 +6,7 @@ sealed class ClimaEstado {
         val temperatura: Double = 0.0,
         val descripcion: String= "",
         val st :Double = 0.0,
-    ) : ClimaEstado()
+        ) : ClimaEstado()
     data class Error(
         val mensaje :String = "",
     ) : ClimaEstado()

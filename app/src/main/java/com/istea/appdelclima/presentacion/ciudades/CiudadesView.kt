@@ -53,7 +53,7 @@ fun CiudadesView (
 fun ListaDeCiudades(ciudades: List<Ciudad>, onSelect: (Ciudad)->Unit) {
     LazyColumn {
         items(items = ciudades) {
-            Card(onClick = { onSelect(it) }) {//TODO ese indice no debe ser 0 cambiar cuando tenga api
+            Card(onClick = { onSelect(it) }) {
                 Text(text = it.name)
             }
         }
