@@ -33,7 +33,11 @@ class CiudadesViewModel(
         viewModelScope.launch {
             try {
                 ciudades = repositorio.buscarCiudad(nombre)
-                uiState = CiudadesEstado.Resultado(ciudades)
+                if (ciudades.isEmpty()) {
+                    uiState = CiudadesEstado.Vacio
+                } else {
+                    uiState = CiudadesEstado.Resultado(ciudades)
+                }
             } catch (exeption: Exception){
                 uiState = CiudadesEstado.Error(exeption.message ?: "error desconocido")
             }

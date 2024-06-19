@@ -1,5 +1,4 @@
 package com.istea.appdelclima.presentacion.clima.pronostico
-import com.istea.appdelclima.repository.modelos.Clima
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
